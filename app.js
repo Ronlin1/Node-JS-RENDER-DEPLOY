@@ -8,7 +8,8 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
-const session = require('express-session');
+// const session = require('express-session');
+const session = require('cookie-session');
 const mongoose = require('mongoose');
 const app = express();
 const passport = require('passport');
@@ -24,7 +25,14 @@ require('./config/passport')(passport);
 const db = require('./config/database');
 
 // connect to mongoose
-mongoose.connect(db.mongoURI).then(() => {
+mongoose.connect(db.mongoURI,{
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  connectTimeoutMS: 3000,
+  useFindAndModify: false,
+}
+  ).then(() => {
     console.log('MongoDB connected...');
 }).catch(err => {
     console.log(err);
